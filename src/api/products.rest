@@ -1,0 +1,11 @@
+@route = http://localhost:3000/products
+# @route = 'http://localhost:3000/api/v1/products'
+
+### GET ALL
+GET {{route}} HTTP/1.1
+
+### GET ALL WITH SORT BY NAME 
+GET {{route}}?_sort=name&_order=asc HTTP/1.1
+
+### GET BY ID
+GET {{route}}/99 HTTP/1.1
