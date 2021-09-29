@@ -1,10 +1,17 @@
-export const loadPage = async (pagePath: string, containerId: string): Promise<HTMLElement> => {
-  const resp: Response = await fetch(pagePath);
-  const pageContentRaw: string = await resp.text();
-  const $article: HTMLElement = document.createElement('article');
+import { LoadPage } from "../interfaces/LoadPage";
+import { Store } from "../interfaces/Store";
 
-  $article.setAttribute('id', containerId);
+export const loadPage = async (name: string, type: 'component' | 'page'): Promise<LoadPage> => {
+  const path = type === 'component' ? '/src/components/' : '/src/pages/'
+  const $article: HTMLElement = document.createElement('article');
+  const module: Promise<any> = import(`${path}${name}/${name}.ts`);
+  const page: Promise<Response> = fetch(`${path}${name}/${name}.html`);
+  const [ moduleReps, pageResp ] = await Promise.allSettled([ module, page ]);
+  const moduleDefaultFn: (store: Store, $elem: HTMLElement) => any = ( moduleReps as any )?.value?.default;
+  const pageContentRaw: string = pageResp.status === 'fulfilled' ? await pageResp.value.text() : '';
+
+  $article.setAttribute('id', name);
   $article.innerHTML = pageContentRaw;
 
-  return $article;
+  return { fn: moduleDefaultFn, $elem: $article};
 };
