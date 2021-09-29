@@ -1,4 +1,4 @@
-import { env } from "../enviroments/develop";
+import { env } from "../environments/develop";
 import { handleResponse } from "../utils/handleResponse";
 import { Category } from "../interfaces/Category";
 import { CategoriesService } from "../interfaces/CategoriesService";

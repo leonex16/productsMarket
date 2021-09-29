@@ -1,4 +1,4 @@
-import { env } from "../enviroments/develop";
+import { env } from "../environments/develop";
 import { handleResponse } from "../utils/handleResponse";
 import { Product } from "../interfaces/Prouduct";
 import { ResponseStatus } from "../interfaces/ResponseStatus";
