@@ -36,11 +36,11 @@ document.addEventListener('readystatechange', async () => {
 
   if (document.readyState === 'complete') {
     console.log('DOM complete');
+
     const navbarComp: LoadPage = await loadPage('navbar', 'component'); // TODO: EXPORT ROUTE
     const homePage: LoadPage = await loadPage('home', 'page'); // TODO: EXPORT ROUTE
 
-    
     app?.appendChild(navbarComp.fn(STORE, navbarComp.$elem));
-    app?.appendChild(homePage.fn(STORE, homePage.$elem));    
+    app?.appendChild(homePage.fn(STORE, homePage.$elem));
   };
 });

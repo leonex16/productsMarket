@@ -1,4 +1,8 @@
+import { ShowToast } from "../../interfaces/ShowToast";
 import { Store } from "../../interfaces/Store";
+import { buildResumeShoppingCart } from "../../utils/buildResumeShoppingCart";
+import { showToast } from "../../utils/showToast";
+import { toggleShoppingCartModal } from "../../utils/toggleShoppingCartModal";
 
 const responsiveNavbar = () => {
   const $navbar = document.querySelector('#navbar-content')!;
@@ -62,18 +66,30 @@ const filterProducts = ( store: Store, filterStr?: string, categoryId?: string )
 };
 
 const navbar = ( store: Store, $elem: Document ) => {
+  setTimeout(() => responsiveNavbar())
+
   const $selectCategory: HTMLInputElement = $elem.querySelector('#navbar-categories')!;
   const $searcherProducts: HTMLInputElement = $elem.querySelector('#navbar-searcher')!;
   const $buttonShoppingCart: HTMLElement = $elem.querySelector('#navbar-shopping-cart-ico')!;
-  // modal-content-shopping-cart
+  const toastConf: ShowToast = {
+    duration: 3000,
+    iconHexColor: '#ffc107',
+    message: `Carrito vacío.`,
+    title: 'Carrito'
+  };
+
   initSelectCategory( store, $selectCategory );
   $searcherProducts.onkeyup = ( evt: any ) => filterProducts( store, evt.target.value, $selectCategory.value );
   $selectCategory.onchange = ( evt: any ) => filterProducts( store, $searcherProducts.value, evt.target.value );
 
   window.onresize = responsiveNavbar;
-  $buttonShoppingCart.onmouseover = () => console.log('test')
-  
-  setTimeout(() => responsiveNavbar())
+  $buttonShoppingCart.onmouseover = () => buildResumeShoppingCart( store );
+  $buttonShoppingCart.onclick = ( ) => {
+    console.log('test');
+    ( Object.values(store.SHOPPING_CART).length === 0 )
+      ? showToast( toastConf )
+      : toggleShoppingCartModal()
+  };
   
   return $elem;
 };
