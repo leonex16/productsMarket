@@ -6,6 +6,7 @@ import { loadPage } from './utils/loadPage';
 import { Category } from './interfaces/Category';
 import { LoadPage } from './interfaces/LoadPage';
 import { Product } from './interfaces/Prouduct';
+import { ShoppingCart } from './interfaces/ShoppingCart';
 import { Store } from './interfaces/Store';
 
 import './style.css'
@@ -15,7 +16,8 @@ const _productsService = productsService;
 const _categoriesService = categoriesService;
 const PRODUCTS: Product[] = [];
 const CATEGORIES: Category[] = [];
-const STORE: Store = { CATEGORIES, PRODUCTS };
+const SHOPPING_CART: ShoppingCart = {};
+const STORE: Store = { CATEGORIES, PRODUCTS, SHOPPING_CART };
 
 const initdata = async () => {
   const [ categoriesResp, productsResp ] = await Promise.all([ _categoriesService.GET(), _productsService.GET() ]);
@@ -39,9 +41,6 @@ document.addEventListener('readystatechange', async () => {
 
     
     app?.appendChild(navbarComp.fn(STORE, navbarComp.$elem));
-    app?.appendChild(homePage.fn(STORE, homePage.$elem));
-
-    
-    
+    app?.appendChild(homePage.fn(STORE, homePage.$elem));    
   };
 });

@@ -1,49 +1,201 @@
 :root {
-  --bs-blue: rgb(13, 110, 253);
-  --bs-indigo: rgb(102, 16, 242);
-  --bs-purple: rgb(111, 66, 193);
-  --bs-pink: rgb(214, 51, 132);
-  --bs-red: rgb(220, 53, 69);
-  --bs-orange: rgb(253, 126, 20);
-  --bs-yellow: rgb(255, 193, 7);
-  --bs-green: rgb(25, 135, 84);
-  --bs-teal: rgb(32, 201, 151);
-  --bs-cyan: rgb(13, 202, 240);
-  --bs-white: rgb(255, 255, 255);
-  --bs-gray: rgb(108, 117, 125);
-  --bs-gray-dark: rgb(52, 58, 64);
-  --bs-gray-100: rgb(248, 249, 250);
-  --bs-gray-200: rgb(233, 236, 239);
-  --bs-gray-300: rgb(222, 226, 230);
-  --bs-gray-400: rgb(206, 212, 218);
-  --bs-gray-500: rgb(173, 181, 189);
-  --bs-gray-600: rgb(108, 117, 125);
-  --bs-gray-700: rgb(73, 80, 87);
-  --bs-gray-800: rgb(52, 58, 64);
-  --bs-gray-900: rgb(33, 37, 41);
-  --bs-primary: rgb(13, 110, 253);
-  --bs-secondary: rgb(108, 117, 125);
-  --bs-success: rgb(25, 135, 84);
-  --bs-info: rgb(13, 202, 240);
-  --bs-warning: rgb(255, 193, 7);
-  --bs-danger: rgb(220, 53, 69);
-  --bs-light: rgb(248, 249, 250);
-  --bs-dark: rgb(33, 37, 41);
-  --bs-font-sans-serif: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  --bs-font-monospace: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
-  --bs-body-font-family: var(--bs-font-sans-serif);
-  --bs-body-font-size: 1rem;
-  --bs-body-font-weight: 400;
-  --bs-body-line-height: 1.5;
-  --bs-body-color: rgb(33, 37, 41);
-  --bs-body-bg: rgb(255, 255, 255);
+	--margin-default: 1rem;
+	--padding-default: 1rem;
+	--bs-blue: rgb(13, 110, 253);
+	--bs-indigo: rgb(102, 16, 242);
+	--bs-purple: rgb(111, 66, 193);
+	--bs-pink: rgb(214, 51, 132);
+	--bs-red: rgb(220, 53, 69);
+	--bs-orange: rgb(253, 126, 20);
+	--bs-yellow: rgb(255, 193, 7);
+	--bs-green: rgb(25, 135, 84);
+	--bs-teal: rgb(32, 201, 151);
+	--bs-cyan: rgb(13, 202, 240);
+	--bs-white: rgb(255, 255, 255);
+	--bs-gray: rgb(108, 117, 125);
+	--bs-gray-dark: rgb(52, 58, 64);
+	--bs-gray-100: rgb(248, 249, 250);
+	--bs-gray-200: rgb(233, 236, 239);
+	--bs-gray-300: rgb(222, 226, 230);
+	--bs-gray-400: rgb(206, 212, 218);
+	--bs-gray-500: rgb(173, 181, 189);
+	--bs-gray-600: rgb(108, 117, 125);
+	--bs-gray-700: rgb(73, 80, 87);
+	--bs-gray-800: rgb(52, 58, 64);
+	--bs-gray-900: rgb(33, 37, 41);
+	--bs-primary: rgb(13, 110, 253);
+	--bs-secondary: rgb(108, 117, 125);
+	--bs-success: rgb(25, 135, 84);
+	--bs-info: rgb(13, 202, 240);
+	--bs-warning: rgb(255, 193, 7);
+	--bs-danger: rgb(220, 53, 69);
+	--bs-light: rgb(248, 249, 250);
+	--bs-dark: rgb(33, 37, 41);
+	--bs-font-sans-serif: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif,
+		'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+	--bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+	--bs-body-font-family: var(--bs-font-sans-serif);
+	--bs-body-font-size: 1rem;
+	--bs-body-font-weight: 400;
+	--bs-body-line-height: 1.5;
+	--bs-body-color: rgb(33, 37, 41);
+	--bs-body-bg: rgb(255, 255, 255);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
-  font-family: 'Montserrat', sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: content-box;
+	font-family: 'Montserrat', sans-serif;
+}
+
+#home,
+#navbar-content {
+	padding: var(--padding-default);
+}
+
+#home {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min-content, 400px));
+	justify-content: center;
+	gap: 1rem;
+}
+
+#navbar-content {
+	box-shadow: 0 1rem 1rem 0rem rgba(0, 0, 0, 0.1);
+	background-color: #ffffff;
+}
+
+.navbar-brand-ico {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 1.8rem;
+  color: #ff6815;
+  transition: background-color 200ms ease;
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.navbar-brand-ico:hover {
+  background-color: #ff6815;
+  color: #FFFFFF;
+}
+
+.card {
+	max-width: 400px;
+}
+
+.card-img-top {
+	width: 100%;
+	height: 350px;
+	object-fit: contain;
+}
+
+.card-title {
+	color: var(--bs-gray-900);
+	text-transform: capitalize;
+	font-weight: bold;
+}
+
+.card-title ~ p {
+	color: #ff6815;
+}
+
+.btn-custom {
+	cursor: pointer;
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: center;
+	text-transform: uppercase;
+	font-size: 1.2rem;
+	font-weight: bolder;
+	padding: 0.5rem 1rem;
+	border: 3px solid;
+	border-radius: 0.3rem;
+	outline: none;
+	width: calc(100% - 2.5rem);
+	transition: background-color 200ms ease;
+}
+
+.btn-custom:hover,
+.btn-custom:active {
+	color: #ffffff;
+}
+
+.btn-custom--orange {
+	background-color: hsl(0deg 0% 0% / 0%);
+	color: hsl(21deg 100% 54%);
+}
+
+.btn-custom--orange:hover,
+.btn-custom--orange:active {
+	background-color: #ff6815;
+}
+
+@media screen and (min-width: 576px) {
+	#navbar {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+		display: flex;
+		align-items: center;
+		box-shadow: 0 1rem 1rem 0rem rgba(0, 0, 0, 0.1);
+		background-color: #ffffff;
+	}
+
+	#navbar-content {
+		box-shadow: none;
+		flex-grow: 1;
+		max-width: 600px;
+	}
+
+	#navbar-subcontent {
+		display: flex;
+		justify-content: space-between;
+		flex-grow: 1;
+		box-shadow: none;
+	}
+
+	#navbar-subcontent form {
+		flex-direction: row !important;
+		justify-content: space-evenly;
+	}
+
+	#navbar-subcontent form > * {
+		width: calc(50% - 3rem) !important;
+	}
+}
+
+@media screen and (min-width: 992px) {
+	#navbar-subcontent {
+		margin: auto;
+		max-width: 1020px;
+	}
+
+	#navbar-subcontent form > * {
+		width: auto !important;
+	}
+
+	#navbar-subcontent form > input {
+		flex-grow: 2;
+		margin-right: 1rem;
+	}
+
+	#navbar-subcontent form > select {
+		flex-grow: 1;
+	}
+}
+
+.red {
+	background-color: red;
+}
+.blue {
+	background-color: blue;
+}
+.green {
+	background-color: green;
 }

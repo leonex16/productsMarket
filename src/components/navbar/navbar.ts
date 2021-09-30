@@ -1,5 +1,15 @@
 import { Store } from "../../interfaces/Store";
 
+const responsiveNavbar = () => {
+  const $navbar = document.querySelector('#navbar-content')!;
+
+  if ( window.innerWidth <= 576 ) {
+    document.getElementById('navbar')?.insertAdjacentElement('afterend', $navbar);
+  } else {
+    document.getElementById('navbar-subcontent')?.insertAdjacentElement('beforeend', $navbar);
+  }
+};
+
 const initSelectCategory = ( store:Store, $select: HTMLInputElement ) => {
   const categories = store.CATEGORIES;
   const $fragment = document.createDocumentFragment();
@@ -54,10 +64,16 @@ const filterProducts = ( store: Store, filterStr?: string, categoryId?: string )
 const navbar = ( store: Store, $elem: Document ) => {
   const $selectCategory: HTMLInputElement = $elem.querySelector('#navbar-categories')!;
   const $searcherProducts: HTMLInputElement = $elem.querySelector('#navbar-searcher')!;
-
+  const $buttonShoppingCart: HTMLElement = $elem.querySelector('#navbar-shopping-cart-ico')!;
+  // modal-content-shopping-cart
   initSelectCategory( store, $selectCategory );
   $searcherProducts.onkeyup = ( evt: any ) => filterProducts( store, evt.target.value, $selectCategory.value );
   $selectCategory.onchange = ( evt: any ) => filterProducts( store, $searcherProducts.value, evt.target.value );
+
+  window.onresize = responsiveNavbar;
+  $buttonShoppingCart.onmouseover = () => console.log('test')
+  
+  setTimeout(() => responsiveNavbar())
   
   return $elem;
 };
