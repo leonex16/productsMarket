@@ -7,13 +7,22 @@
         shopping_cart
       </span>
   </div>
-  <nav id="navbar-content" class="navbar-container sticky-top navbar navbar-expand-lg bg-white">
+  <nav id="navbar-form-container" class="navbar-container sticky-top navbar navbar-expand-lg bg-white">
     <div class="w-100">
       <div class="d-flex flex-column w-auto">
         <form class="d-flex flex-column">
           <input id="navbar-searcher" class="form-control w-auto my-2" type="search" placeholder="Busca tu producto" aria-label="Search">
           <select id="navbar-categories" class="form-select w-auto my-2" aria-label="Categoría">
             <option value="-1" selected>Categoría</option>
+          </select>
+          <select id="navbar-sort-by" class="form-select w-auto my-2" aria-label="Categoría">
+            <option value="-1" selected>Ordenar Por</option>
+            <option value="1" selected>Nombre (A-Z)</option>
+            <option value="2" selected>Nombre (Z-A)</option>
+            <option value="3" selected>Precio (1-9)</option>
+            <option value="4" selected>Precio (9-1)</option>
+            <option value="5" selected>Descuento (1-9)</option>
+            <option value="6" selected>Descuento (9-1)</option>
           </select>
         </form>
       </div>

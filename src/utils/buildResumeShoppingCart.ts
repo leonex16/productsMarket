@@ -2,7 +2,6 @@ import { Product } from '../interfaces/Prouduct';
 import { ShoppingCart } from '../interfaces/ShoppingCart';
 import { ShowToast } from '../interfaces/ShowToast';
 import { Store } from '../interfaces/Store';
-import { getImage } from './getImage';
 import { showToast } from './showToast';
 import { toggleShoppingCartModal } from './toggleShoppingCartModal';
 
@@ -88,7 +87,7 @@ export const buildResumeShoppingCart = (store: Store) => {
     $buttonCard.className = 'btn btn-danger d-flex align-items-center';
     $spanIco.className = 'material-icons-outlined';
 
-    $imgCard.src = getImage(firstProduct.url_image);
+    $imgCard.src = firstProduct.url_image;
     $imgCard.alt = firstProduct.name;
     $h4TitleCard.textContent = firstProduct.name;
     $pQuantityProducts.id = 'quantity-products';

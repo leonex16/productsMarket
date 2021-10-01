@@ -5,16 +5,22 @@ import { showToast } from "../../utils/showToast";
 import { toggleShoppingCartModal } from "../../utils/toggleShoppingCartModal";
 
 const responsiveNavbar = () => {
-  const $navbar = document.querySelector('#navbar-content')!;
+  const $navbar = document.querySelector('#navbar-form-container')!;
 
-  if ( window.innerWidth <= 576 ) {
+  if ( window.innerWidth <= 768 ) {
     document.getElementById('navbar')?.insertAdjacentElement('afterend', $navbar);
   } else {
     document.getElementById('navbar-subcontent')?.insertAdjacentElement('beforeend', $navbar);
   }
 };
 
-const initSelectCategory = ( store:Store, $select: HTMLInputElement ) => {
+const handleClickShoppingCart = ( store: Store, toastConf: ShowToast ) => {
+  ( Object.values(store.SHOPPING_CART).length === 0 )
+  ? showToast( toastConf )
+  : toggleShoppingCartModal()
+};
+
+const initSelectCategory = ( store: Store, $select: HTMLInputElement ) => {
   const categories = store.CATEGORIES;
   const $fragment = document.createDocumentFragment();
 
@@ -28,7 +34,7 @@ const initSelectCategory = ( store:Store, $select: HTMLInputElement ) => {
   $select.append($fragment);
 };
 
-const filterProducts = ( store: Store, filterStr?: string, categoryId?: string ) => {
+const filterProducts = ( store: Store, filterStr: string, categoryId: string, orderById: string ) => {
   const products = store.PRODUCTS;
   const categoryFilter = categoryId ?? "-1";
   const textFilter: string = filterStr?.toLowerCase() ?? '';
@@ -68,8 +74,9 @@ const filterProducts = ( store: Store, filterStr?: string, categoryId?: string )
 const navbar = ( store: Store, $elem: Document ) => {
   setTimeout(() => responsiveNavbar())
 
-  const $selectCategory: HTMLInputElement = $elem.querySelector('#navbar-categories')!;
   const $searcherProducts: HTMLInputElement = $elem.querySelector('#navbar-searcher')!;
+  const $selectCategory: HTMLInputElement = $elem.querySelector('#navbar-categories')!;
+  const $selectOrderBy: HTMLInputElement = $elem.querySelector('#navbar-order-by')!;
   const $buttonShoppingCart: HTMLElement = $elem.querySelector('#navbar-shopping-cart-ico')!;
   const toastConf: ShowToast = {
     duration: 3000,
@@ -79,19 +86,20 @@ const navbar = ( store: Store, $elem: Document ) => {
   };
 
   initSelectCategory( store, $selectCategory );
-  $searcherProducts.onkeyup = ( evt: any ) => filterProducts( store, evt.target.value, $selectCategory.value );
-  $selectCategory.onchange = ( evt: any ) => filterProducts( store, $searcherProducts.value, evt.target.value );
-
+  // TODO: FINISH NEW FILTER, NEED MODIFICATE FILTERPRODUCTS FUNCTION, IT MUST ALLOW 3 PARAMS
   window.onresize = responsiveNavbar;
-  $buttonShoppingCart.onmouseover = () => buildResumeShoppingCart( store );
-  $buttonShoppingCart.onclick = ( ) => {
-    console.log('test');
-    ( Object.values(store.SHOPPING_CART).length === 0 )
-      ? showToast( toastConf )
-      : toggleShoppingCartModal()
+  $searcherProducts.onkeyup = ( evt: any ) => filterProducts( store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value );
+  $elem.onchange = ( evt: any ) => {
+    if ( !evt.target.matches('#navbar-categories') && !evt.target.matches('#navbar-sort-by') ) return;
+    console.log(evt.target.value)
+    filterProducts( store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value )
   };
+  $buttonShoppingCart.onmouseover = () => buildResumeShoppingCart( store );
+  $buttonShoppingCart.onclick = () => handleClickShoppingCart( store, toastConf );
   
   return $elem;
 };
+
+
 
 export default navbar;

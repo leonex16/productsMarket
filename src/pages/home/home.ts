@@ -1,7 +1,6 @@
 import { Product } from "../../interfaces/Prouduct";
 import { ShowToast } from "../../interfaces/ShowToast";
 import { Store } from "../../interfaces/Store";
-import { getImage } from "../../utils/getImage";
 import { showToast } from "../../utils/showToast";
 
 const addProductToCart = ( store: Store, product: Product ) => {
@@ -35,7 +34,7 @@ const createProudctsCard = ( store: Store ) => {
     $spanIco.className = 'material-icons-outlined';
 
     $divContainer.id = product.id.toString();
-    $imgProd.src = getImage(product.url_image);
+    $imgProd.src = product.url_image;
     $imgProd.alt = product.name;
     $h5Title.textContent = product.name;
     $pTotal.textContent = '$' + (product.price - product.discount).toLocaleString('es-CL');

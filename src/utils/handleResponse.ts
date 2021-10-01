@@ -9,6 +9,7 @@ export const handleResponse = async <T>(promise: Promise<Response>) => {
   };
   try {
     const resp: Response = await promise;
+    console.log
     const json: T = await resp.json();
     responseStatus.status = 'success';
     responseStatus.statusCode = resp.status;

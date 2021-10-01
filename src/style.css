@@ -57,7 +57,7 @@
 }
 
 #home,
-#navbar-content {
+#navbar-form-container {
 	padding: var(--padding-default);
 }
 
@@ -70,7 +70,7 @@
 	margin: auto;
 }
 
-#navbar-content {
+#navbar-form-container {
 	box-shadow: 0 1rem 1rem 0rem rgba(0, 0, 0, 0.1);
 	background-color: #ffffff;
 }
@@ -96,6 +96,7 @@
   position: absolute;
   top: 20px;
   right: 24px;
+	cursor: pointer;
   font-size: 1.8rem;
   color: #ff6815;
   transition: background-color 200ms ease;
@@ -124,10 +125,6 @@
 	font-weight: bold;
 	min-height: 48px;
 }
-
-/* .card-title ~ p {
-	color: #ff6815;
-} */
 
 .btn-custom {
 	cursor: pointer;
@@ -176,7 +173,8 @@
 	color: #ff6815;
 }
 
-@media screen and (min-width: 576px) {
+@media screen and (max-width: 768px) {
+
 	#navbar {
 		position: sticky;
 		top: 0;
@@ -187,31 +185,29 @@
 		background-color: #ffffff;
 	}
 
-	#navbar-content {
-		box-shadow: none;
-		flex-grow: 1;
-		max-width: 600px;
-	}
-
 	#navbar-subcontent {
 		display: flex;
+		flex-direction: column;
 		justify-content: space-between;
+
 		flex-grow: 1;
-		max-width: 90%;
 		box-shadow: none;
 	}
 
-	#navbar-subcontent form {
+	/* #navbar-subcontent form {
 		flex-direction: row !important;
 		justify-content: space-evenly;
-	}
+	} */
 
-	#navbar-subcontent form > * {
+	/* #navbar-subcontent form > * {
 		width: calc(50% - 3rem) !important;
-	}
+	} */
 
-	#go-up-btn {
-		display: none;
+	#navbar-form-container form {
+		display: flex;
+		flex-direction: row;
+		box-shadow: none;
+		flex-grow: 1;
 	}
 
 	.navbar-brand-ico {
@@ -224,32 +220,48 @@
 	}
 }
 
-@media screen and (min-width: 992px) {
-	#navbar-subcontent {
-		margin: auto;
-		max-width: 1020px;
+@media screen and (min-width: 767px) {
+	#navbar {
+		position: static;
+		top: 0;
+		display: flex;
+		box-shadow: 0 1rem 1rem 0rem rgba(0, 0, 0, 0.1);
+		background-color: #ffffff;
 	}
 
-	#navbar-subcontent form > * {
-		width: auto !important;
+	#navbar-form-container {
+		box-shadow: none;
+		flex-grow: 1;
+	}
+
+	#navbar-subcontent {
+		display: flex;
+		flex-direction: row;
+		margin: auto;
+		max-width: 1020px;
+		flex-grow: 1;
+	}
+	
+	#navbar-subcontent form {
+		box-shadow: none !important;
+		display: flex;
+		flex-direction: row !important;
 	}
 
 	#navbar-subcontent form > input {
-		flex-grow: 2;
-		margin-right: 1rem;
+		flex-grow: 6;
 	}
 
 	#navbar-subcontent form > select {
 		flex-grow: 1;
 	}
-}
 
-.red {
-	background-color: red;
-}
-.blue {
-	background-color: blue;
-}
-.green {
-	background-color: green;
+	#navbar-subcontent form > select:nth-child(2) {
+		flex-grow: 1;
+		margin: auto 1rem;
+	}
+
+	#go-up-btn {
+		display: none;
+	}
 }

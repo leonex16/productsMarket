@@ -1,4 +1,4 @@
-import { env } from "../environments/develop";
+import { env } from "../environments/production";
 import { handleResponse } from "../utils/handleResponse";
 import { Product } from "../interfaces/Prouduct";
 import { ResponseStatus } from "../interfaces/ResponseStatus";
@@ -7,6 +7,7 @@ import { ProductsService } from "../interfaces/ProductsService";
 const { API_URL, API_VERSION, ENDPOINTS } = env;
 const route = API_URL + API_VERSION + ENDPOINTS.PRODUCTS;
 const _productsService: any = {};
+console.log(route)
 
 const qs = (filters: any) => {
   const qsArr = Object.entries(filters).map((kv) => kv.join('='));
