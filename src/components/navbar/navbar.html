@@ -9,20 +9,20 @@
   </div>
   <nav id="navbar-form-container" class="navbar-container sticky-top navbar navbar-expand-lg bg-white">
     <div class="w-100">
-      <div class="d-flex flex-column w-auto">
-        <form class="d-flex flex-column">
+      <div class="d-flex flex-column">
+        <form id="navbar-form" class="d-flex flex-column px-4">
           <input id="navbar-searcher" class="form-control w-auto my-2" type="search" placeholder="Busca tu producto" aria-label="Search">
           <select id="navbar-categories" class="form-select w-auto my-2" aria-label="Categoría">
             <option value="-1" selected>Categoría</option>
           </select>
-          <select id="navbar-sort-by" class="form-select w-auto my-2" aria-label="Categoría">
+          <select id="navbar-order-by" class="form-select w-auto my-2" aria-label="Categoría">
             <option value="-1" selected>Ordenar Por</option>
-            <option value="1" selected>Nombre (A-Z)</option>
-            <option value="2" selected>Nombre (Z-A)</option>
-            <option value="3" selected>Precio (1-9)</option>
-            <option value="4" selected>Precio (9-1)</option>
-            <option value="5" selected>Descuento (1-9)</option>
-            <option value="6" selected>Descuento (9-1)</option>
+            <option value="1">Nombre (A-Z)</option>
+            <option value="2">Nombre (Z-A)</option>
+            <option value="3">Precio (Menor a Mayor)</option>
+            <option value="4">Precio (Mayor a Menor)</option>
+            <option value="5">Descuento (Menor a Mayor)</option>
+            <option value="6">Descuento (Mayor a Menor)</option>
           </select>
         </form>
       </div>

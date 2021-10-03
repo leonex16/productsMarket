@@ -2,8 +2,43 @@ import { Product } from '../interfaces/Prouduct';
 import { ShoppingCart } from '../interfaces/ShoppingCart';
 import { ShowToast } from '../interfaces/ShowToast';
 import { Store } from '../interfaces/Store';
+import { productsService } from '../services/productsService';
+import { isLoading } from './isLoading';
+import { openPdfOnTab } from './openPdfOnTab';
+import { saveAsPdf } from './saveAsPdf';
 import { showToast } from './showToast';
 import { toggleShoppingCartModal } from './toggleShoppingCartModal';
+
+const _productService = productsService;
+
+const handleClickPayBtn = async ( store: Store, target: HTMLElement ) => {
+  const toastConf: ShowToast = {
+    duration: 6000,
+    iconHexColor: '#20c997',
+    message: `Gracias por su compra 🥰.`,
+    title: 'Carrito'
+  };
+  isLoading(true);
+
+  try {
+    const resp = await _productService.DOWNLOAD_INVOICE( store.SHOPPING_CART );
+    const pdfBlob = await resp.blob();
+    const blob = new Blob( [ pdfBlob ], { type: 'application/pdf' } );
+    // const $anchor = target.nextElementSibling! as HTMLAnchorElement;
+
+    openPdfOnTab( blob );
+    // saveAsPdf( $anchor, blob );
+    toggleShoppingCartModal();
+    store.SHOPPING_CART = [];
+  } catch (error) {
+    toastConf.iconHexColor = '#dc3545';
+    toastConf.message = 'Ops! Ha ocurrido un error. Vuelve a intentarlo más tarde 🥺👉👈.';
+    console.error( 'BUILD_RESUME_SHOPPING_CART => ' + error );
+  } finally {
+    showToast(toastConf);
+    isLoading(false);
+  }
+}
 
 const getTotalToPay = ( shoppingCart: ShoppingCart ): number => {
   return Object.values(shoppingCart).reduce( ( acumulator: number, products: Product[] ) => {
@@ -36,18 +71,21 @@ const removeProductStore = ( store: Store, $card: HTMLDivElement, product: Produ
     title: 'Carrito'
   };
 
-  shoppingCartRef.pop();
+  store.SHOPPING_CART[product.id] = shoppingCartRef.slice( 0, -1 );
   
   updateMountToPay( store );
 
-  if ( shoppingCartRef.length === 0 ) return toggleShoppingCartModal();
+  if ( shoppingCartRef.length === 1 ) {
+    delete store.SHOPPING_CART[product.id];
+    return toggleShoppingCartModal();
+  };
 
   $card.querySelector('#quantity-products')!.textContent = shoppingCartRef.length.toLocaleString('es-CL') + ' UN';
   $card.querySelector('#total')!.textContent = '$' + ( (product.price - product.discount) * shoppingCartRef.length ).toLocaleString('es-CL');
   showToast(toastConf);
 };
 
-export const buildResumeShoppingCart = (store: Store) => {
+export const buildResumeShoppingCart = ( store: Store ) => {
   const $bodyShoppingCart: HTMLElement = document.getElementById('modal-content-shopping-cart')!;
   const $closeButtonHeader: HTMLElement = document.getElementById('modal-close-header')!;
   const $closeButtonFooter: HTMLElement = document.getElementById('modal-close-button')!;
@@ -56,7 +94,7 @@ export const buildResumeShoppingCart = (store: Store) => {
   const $frag = document.createDocumentFragment();
   
   updateMountToPay( store );
-  $payButton.onclick = () => {};
+  $payButton.onclick = () => handleClickPayBtn( store, $payButton );
   $closeButtonHeader.onclick = () => toggleShoppingCartModal();
   $closeButtonFooter.onclick = () => toggleShoppingCartModal();
 

@@ -1,8 +1,24 @@
+import { Filters } from "../../interfaces/Filters";
+import { Product } from "../../interfaces/Prouduct";
+import { ResponseStatus } from "../../interfaces/ResponseStatus";
 import { ShowToast } from "../../interfaces/ShowToast";
 import { Store } from "../../interfaces/Store";
+import { productsService } from "../../services/productsService";
 import { buildResumeShoppingCart } from "../../utils/buildResumeShoppingCart";
+import { createProudctsCard } from "../../utils/createProudctsCard";
 import { showToast } from "../../utils/showToast";
 import { toggleShoppingCartModal } from "../../utils/toggleShoppingCartModal";
+
+const handleSubmit = ( evt: Event, store: Store, name: string, category: string, orderById: string ) => {
+  evt.preventDefault();
+  filterProductsOnline( store, name, category, orderById );
+};
+
+const handleChange = ( evt: any, store: Store, name: string, category: string, orderById: string ) => {
+  if ( !evt.target.matches('#navbar-categories') && !evt.target.matches('#navbar-order-by') ) return;
+  // filterProductsOffline( store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value );
+  filterProductsOnline( store, name, category, orderById );
+};
 
 const responsiveNavbar = () => {
   const $navbar = document.querySelector('#navbar-form-container')!;
@@ -34,28 +50,29 @@ const initSelectCategory = ( store: Store, $select: HTMLInputElement ) => {
   $select.append($fragment);
 };
 
-const filterProducts = ( store: Store, filterStr: string, categoryId: string, orderById: string ) => {
+const filterProductsOffline = ( store: Store, filterStr: string, category: string, orderById: string ) => {
   const products = store.PRODUCTS;
-  const categoryFilter = categoryId ?? "-1";
   const textFilter: string = filterStr?.toLowerCase() ?? '';
   const productsMatchIds: number[] = [];
   
   for ( let i = 0; i < products.length; i++ ) {
     const productName: string = products[i].name.toLowerCase();
 
+    switch (true) {
+      case textFilter.length > 0 && productName.includes(textFilter) && +category === products[i].category:
+        productsMatchIds.push( products[i].id );
+        break;
+      
+      case textFilter.length === 0 && category !== '-1' && +category === products[i].category:
+        productsMatchIds.push( products[i].id );
+        break;
 
-    if (
-      ( categoryFilter === '-1' && productName.includes(textFilter) ) ||
-      (
-        categoryFilter !== '-1' &&
-        textFilter.length > 0 &&
-        +categoryFilter === products[i].category &&
-        productName.includes(textFilter)
-      ) ||
-      ( +categoryFilter === products[i].category && productName.includes(textFilter) )
-    ) {
-      productsMatchIds.push(products[i].id);
-      continue;
+      case category === '-1' && productName.includes(textFilter):
+        productsMatchIds.push( products[i].id );
+        break;
+      
+      default:
+        break;
     };
     
   };
@@ -64,16 +81,30 @@ const filterProducts = ( store: Store, filterStr: string, categoryId: string, or
     const $product = document.getElementById(product.id.toString());
 
     productsMatchIds.includes(product.id)
-      ? $product!.style.display = 'block'
-      : $product!.style.display = 'none'; // TODO: CREATE CLASS
-    
+      ? $product!.classList.remove('d-none')
+      : $product!.classList.add('d-none');
   });
 
 };
 
+const filterProductsOnline = async ( store: Store, name: string, category: string, orderById: string ) => {
+  const _productsService = productsService;
+  const filters: Filters = { name, category, orderById };
+  const resp: ResponseStatus<Product | Product[]> = await _productsService.GET( undefined, filters );
+  
+  
+  if ( resp.status === 'error' && resp.body === null ) return;
+  
+  store.PRODUCTS = resp.body as Product[];
+  const $homeContainer = document.getElementById('home')!;
+  const $productsFragment = createProudctsCard(store);
+  $homeContainer.replaceChildren($productsFragment);
+  
+};
+
 const navbar = ( store: Store, $elem: Document ) => {
   setTimeout(() => responsiveNavbar())
-
+  const $navbarForm: HTMLElement = $elem.querySelector('#navbar-form')!;
   const $searcherProducts: HTMLInputElement = $elem.querySelector('#navbar-searcher')!;
   const $selectCategory: HTMLInputElement = $elem.querySelector('#navbar-categories')!;
   const $selectOrderBy: HTMLInputElement = $elem.querySelector('#navbar-order-by')!;
@@ -86,14 +117,12 @@ const navbar = ( store: Store, $elem: Document ) => {
   };
 
   initSelectCategory( store, $selectCategory );
-  // TODO: FINISH NEW FILTER, NEED MODIFICATE FILTERPRODUCTS FUNCTION, IT MUST ALLOW 3 PARAMS
+
   window.onresize = responsiveNavbar;
-  $searcherProducts.onkeyup = ( evt: any ) => filterProducts( store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value );
-  $elem.onchange = ( evt: any ) => {
-    if ( !evt.target.matches('#navbar-categories') && !evt.target.matches('#navbar-sort-by') ) return;
-    console.log(evt.target.value)
-    filterProducts( store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value )
-  };
+  // $searcherProducts.onkeyup = () => filterProductsOffline( store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value );
+  $navbarForm.onsubmit = ( evt: Event ) => handleSubmit( evt, store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value );
+  $navbarForm.onchange = ( evt: any ) => handleChange( evt, store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value );
+  $searcherProducts.onblur = ( evt: Event ) => handleSubmit( evt, store, $searcherProducts.value, $selectCategory.value, $selectOrderBy.value );
   $buttonShoppingCart.onmouseover = () => buildResumeShoppingCart( store );
   $buttonShoppingCart.onclick = () => handleClickShoppingCart( store, toastConf );
   
